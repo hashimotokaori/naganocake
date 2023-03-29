@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 # 顧客用
 # URL /customers/sign_in ...
+root to:"public/homes#top"
 devise_for :customers,skip: [:passwords], controllers: {
   registrations: "public/registrations",
   sessions: 'public/sessions'
