@@ -13,7 +13,7 @@ class Admin::GenresController < ApplicationController
     else
       flash[:genre_created_error] = "ジャンル名を入力してください"
     redirect_to
-   end
+    end
   end
 
   def edit
