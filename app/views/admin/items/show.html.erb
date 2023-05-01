@@ -1,44 +1,40 @@
-<div class="row">
-  <div class="col-xs-4">
-      <h2>商品詳細</h2><br>
-      <%= attachment_image_tag @item, :image, :fill, 300, 300, fallback: 'no_image.jpg' %>
-  </div>
+<div class="container">
+  <div class="row">
+    <h2>商品詳細</h2>
+    <div class="col-xs-4">
+      <%= attachment_image_tag @item, :image, size:'250x250', fallback: 'no_image.jpg',size: "250x250" %>
+    </div>
+    <div class="col-xs-6">
 
-      <br><br><br><br>
-      <div class="col-xs-8">
-        <table class="table">
-          <tbody>
-            <tr>
-              <td>商品名</td>
-              <td><%= @item.name %></td>
-            </tr>
-            <tr>
-              <td>商品説明</td>
-              <td><%= @item.description %></td>
-            </tr>
-            <tr>
-              <td>ジャンル</td>
-              <td><%= @item.genre.name %></td>
-            </tr>
-            <tr>
-              <td>税込価格</td>
-              <td><%= (@item.price_without_tax*1.1).floor.to_s(:delimited, delimiter: ',') %>円</td>
-            </tr>
-            <tr>
-              <td>販売ステータス</td>
-              <td>
-              <% if @item.is_sales_status == false %>
-              販売中
-              <% else %>
-              販売停止中
-              <% end %>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="col-md-offset-1 col-
-          md-2 text-right">
-          <%= link_to "編集する", edit_admins_item_path(@item), class: "btn btn-primary" %>
-        </div>
+      <div>
+        <p><strong class="col-xs-2">商品名</strong><%= @product.name %></p>
+      </div>
+      <br>
+      <div>
+          <p><strong class="col-xs-2">商品説明</strong><%= @product.introduction %></p>
+      </div>
+      <br>
+      <div>
+          <p><strong class="col-xs-2">ジャンル</strong><%= @product.genre.name %></p>
+      </div>
+      <br>
+      <div>
+          <p><strong class="col-xs-4">税込価格(税抜価格)</strong><%= (@product.price*1.1).floor.to_s(:delimited) %>(<%= (@product.price).floor.to_s(:delimited) %>)円</p>
+      </div>
+      <br>
+      <div>
+      <p><strong class="col-xs-3">販売ステータス</strong>
+      <% if @item.is_active == true %>
+        <%= "販売中" %>
+      <% else %>
+        <%=  "売り切れ" %>
+      <% end %>
+      <br>
+      </div>
+      <div class="text-right">
+        <%= link_to "編集する",edit_admin_item_path(@item), class:"btn btn-primary" %>
       </div>
     </div>
+    <div class="col-xs-2"></div>
+  </div>
+</div>

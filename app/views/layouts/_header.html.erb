@@ -1,0 +1,47 @@
+<header>
+   <div class="container">
+    <div class="row">
+     <!--ロゴ -->
+      <nav class="nav navbar-nav navbar-left">
+      <% if admin_signed_in? %>
+        <%= link_to "LOGO", href="/", class: "fas fa-birthday-cake" %>
+      <% else %>
+        <%= link_to "LOGO", root_path, class: "fas fa-birthday-cake" %>
+      <% end %>
+       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ml-auto">
+     </nav>
+
+        <ul class="nav-item nav navbar-nav navbar-right">
+          <% if customer_signed_in? %>
+           <!--カスタマーがログインしている時　-->
+           <li class="customer-name">
+            ようこそ、<%= current_customer.first_name %>さん！
+           </li>
+           <li class="nav-item"><%= link_to "マイページ", customer_path(current_customer), class:"btn btn-success" %></li>
+           <li class="nav-item"><%= link_to "商品一覧", items_path, class:"btn btn-success"  %></li>
+           <li class="nav-item"><%= link_to "カート", cart_products_path, class:"btn btn-success" %></li>
+           <li class="nav-item"><%= link_to "ログアウト", destroy_customer_session_path, method: :delete, class:"btn btn-success" %></li>
+          <% elsif admin_signed_in? %>
+           <!--管理者がログインしている時 -->
+            <li class="nav-item"><%= link_to "商品一覧", admin_items_path, class:"btn btn-success" %></li>
+            <li class="nav-item"><%= link_to "会員一覧", admin_customers_path, class:"btn btn-success" %></li>
+            <li class="nav-item"><%= link_to "注文履歴一覧", admin_orders_path, class:"btn btn-success" %></li>
+            <li class="nav-item"><%= link_to "ジャンル一覧", admin_genres_path, class:"btn btn-success" %></li>
+            <li class="nav-item"><%= link_to "ログアウト", destroy_admin_session_path, method: :delete, class:"btn btn-success" %></li>
+            <%= render "layouts/search" %>
+          <% else %>
+           <!--ログインしていない時　-->
+            <li class="nav-item"><%= link_to "about", about_path, class:"btn btn-success" %></li>
+            <li class="nav-item"><%= link_to "商品一覧", items_path, class:"btn btn-success" %> </li>
+            <li class="nav-item"><%= link_to "新規登録", new_customer_registration_path, class:"btn btn-success" %></li>
+            <li class="nav-item"><%= link_to "ログイン", new_customer_session_path, class:"btn btn-success" %></li>
+          <% end %>
+        </ul>
+     </nav>
+    </div>
+  </div>
+ </header>

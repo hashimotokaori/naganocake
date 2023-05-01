@@ -20,4 +20,12 @@ class Customer < ApplicationRecord
        validates :phone_number, presence: true
        validates :postal_code,  presence: true
        validates :address, presence: true
+       
+       def self.ransackable_attributes(auth_object = nil)
+    ["address", "created_at", "email", "encrypted_password", "first_name", "first_name_kana", "id", "last_name", "last_name_kana", "postal_code", "remember_created_at", "reset_password_sent_at", "reset_password_token", "telephone_number", "updated_at"]
+       end
+       
+       def self.ransackable_associations(auth_object = nil)
+    ["cart_items", "orders", "shipping_addresses"]
+       end
 end

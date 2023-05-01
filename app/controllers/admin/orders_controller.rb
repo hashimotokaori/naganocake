@@ -2,6 +2,7 @@ class Admin::OrdersController < ApplicationController
     before_action :authenticate_admin!
     
     def index
+    	@orders = Order.all.page(params[:page]).per(10).order('created_at DESC')
 		@search = Order.ransack(params[:q])
         @orders = @search.result.page(params[:page]).per(10)
 	end

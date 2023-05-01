@@ -2,6 +2,7 @@ class Admin::CustomersController < ApplicationController
     before_action :authenticate_admin!
     
   def index
+    @customers = Customer.all
     @search = Customer.ransack(params[:q])
     @customers = @search.result.page(params[:page]).per(10)
   end
@@ -17,15 +18,15 @@ class Admin::CustomersController < ApplicationController
   def update
     @customer = Customer.find(params[:id])
     if @customer.update(customer_params)
-      redirect_to admins_customer_path(@customer)
-      flash[:notice_update] = "ジャンル情報を更新しました！"
+      flash[:success] = "Customer was successfully updated"
+      redirect_to admin_customer_path(@customer)
     else
-      edit_admins_customer_path(@customer)
+      render "edit"
     end
   end
 
   private
   def customer_params
-    params.require(:customer).permit(:last_name, :first_name, :last_name_kana, :first_name_kana, :postal_code, :address, :phone_number, :email, :is_customer_status)
+    params.require(:customer).permit(:last_name, :first_name, :last_name_kana, :first_name_kana, :postal_code, :address, :phone_number, :email, :is_customer_status, :is_deleted)
   end
 end
