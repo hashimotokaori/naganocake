@@ -5,10 +5,9 @@ class Item < ApplicationRecord
 
   has_one_attached :image
   validates :name, {presence: true}
-  validates :description, {presence: true}
-  validates :price_without_tax, {presence: true}
+  validates :price, {presence: true}
   validates :introduction, presence: true
-  validates :is_active, inclusion: {in: [true, false]}
+  # validates :is_active, inclusion: {in: [true, false]}
 
   def self.ransackable_attributes(auth_object = nil)
     ["created_at", "genre_id", "id", "introduction", "is_active", "name", "price", "updated_at"]

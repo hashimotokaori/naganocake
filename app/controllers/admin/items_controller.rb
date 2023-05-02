@@ -6,13 +6,13 @@ class Admin::ItemsController < ApplicationController
   end
   
   def create
-    @item = Item.new(item_params)
-    if @item.save
-      flash[:notice] ="Product was successfully created"
-      redirect_to admin_item_path(@item)
-    else
-      render "new"
-    end
+    @items = Item.new(item_params)
+     if @items.save!
+       flash[:notice] ="Product was successfully created"
+       redirect_to admin_item_path(@items.id)
+     else
+       render "new"
+     end
   end
   
   def index
@@ -40,7 +40,7 @@ class Admin::ItemsController < ApplicationController
 
   private
   def item_params
-    params.require(:item).permit(:genre_id, :name, :description, :price_without_tax, :image, :is_sales_status)
+    params.require(:item).permit(:genre_id, :name, :introduction, :price, :image, :is_sales_status, :is_active)
   end
     
 end
