@@ -7,7 +7,6 @@ Rails.application.routes.draw do
 # URL /customers/sign_in ...
 devise_for :customers,skip: [:passwords], controllers: {
   registrations: "public/registrations",
-  passwords:     'public/passwords',
   sessions: 'public/sessions'
 }
 

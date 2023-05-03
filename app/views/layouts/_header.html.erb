@@ -1,8 +1,10 @@
-<header>
+<body>
+<header class="navbar navbar-expand-lg navbar-dark bg-dark ">
    <div class="container">
-    <div class="row">
+    
+
      <!--ロゴ -->
-      <nav class="nav navbar-nav navbar-left">
+      <a nav class="nav navbar-nav navbar-left">
       <% if admin_signed_in? %>
         <%= link_to "LOGO", href="/", class: "fas fa-birthday-cake" %>
       <% else %>
@@ -22,22 +24,32 @@
             ようこそ、<%= current_customer.first_name %>さん！
            </li>
            <li class="nav-item"><%= link_to "マイページ", customer_path(current_customer), class:"btn btn-success" %></li>
+           [&nbsp;]
            <li class="nav-item"><%= link_to "商品一覧", items_path, class:"btn btn-success"  %></li>
+           [&nbsp;]
            <li class="nav-item"><%= link_to "カート", cart_products_path, class:"btn btn-success" %></li>
+           [&nbsp;]
            <li class="nav-item"><%= link_to "ログアウト", destroy_customer_session_path, method: :delete, class:"btn btn-success" %></li>
           <% elsif admin_signed_in? %>
            <!--管理者がログインしている時 -->
             <li class="nav-item"><%= link_to "商品一覧", admin_items_path, class:"btn btn-success" %></li>
+            [&nbsp;]
             <li class="nav-item"><%= link_to "会員一覧", admin_customers_path, class:"btn btn-success" %></li>
+            [&nbsp;]
             <li class="nav-item"><%= link_to "注文履歴一覧", admin_orders_path, class:"btn btn-success" %></li>
+            [&nbsp;]
             <li class="nav-item"><%= link_to "ジャンル一覧", admin_genres_path, class:"btn btn-success" %></li>
+            [&nbsp;]
             <li class="nav-item"><%= link_to "ログアウト", destroy_admin_session_path, method: :delete, class:"btn btn-success" %></li>
             <%= render "layouts/search" %>
           <% else %>
            <!--ログインしていない時　-->
             <li class="nav-item"><%= link_to "about", about_path, class:"btn btn-success" %></li>
+            [&nbsp;]
             <li class="nav-item"><%= link_to "商品一覧", items_path, class:"btn btn-success" %> </li>
+            [&nbsp;]
             <li class="nav-item"><%= link_to "新規登録", new_customer_registration_path, class:"btn btn-success" %></li>
+            [&nbsp;]
             <li class="nav-item"><%= link_to "ログイン", new_customer_session_path, class:"btn btn-success" %></li>
           <% end %>
         </ul>
@@ -45,3 +57,4 @@
     </div>
   </div>
  </header>
+ </body>

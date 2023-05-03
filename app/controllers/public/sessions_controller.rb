@@ -26,15 +26,21 @@ def customer_state
   ## アカウントを取得できなかった場合、このメソッドを終了する
   return if !@customer
   ## 【処理内容2】 取得したアカウントのパスワードと入力されたパスワードが一致してるかを判別
-  if @customer.valid_password?(params[:customer][:password])
+  if (@customer.valid_password?(params[:customer][:password])) && (@customer.active_for_authentication? == false)
+        flash[:notice] = "退会済みのためログインできません。"
+        redirect_to new_customer_session_path
     ## 【処理内容3】
+    
+    
+    
+    
   ## 例1
-  true && !false
-  → true
+  # true && !false
+  # → true
 
   ## 例2
-  true && !true
-  → false
+  # true && !true
+  # → false
   end
 end
 end
