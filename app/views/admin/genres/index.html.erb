@@ -33,14 +33,14 @@
           <% @genres.each do |genre| %>
             <tr>
               <td><%= genre.name %></td>
-              <td>
-                <% if genre.is_genres_status %>
-                有効
-                <% else %>
-                無効
-                <% end %>
-              </td>
-              <td><%= link_to "編集する", edit_admins_genre_path(genre), class: "btn btn-primary" %></td>
+              <!--<td>-->
+                <%# if genre.is_genres_status %>
+                <!--有効-->
+                <%# else %>
+                <!--無効-->
+                <%# end %>
+              <!--</td>-->
+              <td><%= link_to "編集する", edit_admin_genre_path(genre), class: "btn btn-primary" %></td>
             </tr>
             <% end %>
         </tbody>
