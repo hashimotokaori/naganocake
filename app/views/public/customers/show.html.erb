@@ -4,8 +4,8 @@
         <table class="table table-bordered table-condensed">
             <p>
                 <strong class="information-link">登録情報</strong>
-                <%= link_to " 編集する", customers_contact_path, class: "glyphicon glyphicon-pencil btn btn-success" %>
-                <%= link_to " パスワードを変更する", edit_customer_password_path, class: "glyphicon glyphicon-pencil btn btn-warning" %>
+                <%= link_to " 編集する", public_customers_edit_path, class: "glyphicon glyphicon-pencil btn btn-success" %>
+                <%#= link_to " パスワードを変更する", edit_password_path, class: "glyphicon glyphicon-pencil btn btn-warning" %>
             </p>
             <tr>
                 <td class="col-xs-2">氏名</td>
@@ -39,11 +39,11 @@
         </table>
         <p>
             <strong class="shipping-link">配送先</strong>
-            <%= link_to " 一覧を見る", addresses_path, class: "glyphicon glyphicon-folder-open btn btn-info" %>
+            <%= link_to " 一覧を見る", public_shipping_addresses_path, class: "glyphicon glyphicon-folder-open btn btn-info" %>
         </p>
         <p>
             <strong class="shipping-link">注文履歴</strong>
-            <%= link_to " 一覧を見る", orders_path, class: "glyphicon glyphicon-folder-open btn btn-info" %>
+            <%= link_to " 一覧を見る", public_orders_path, class: "glyphicon glyphicon-folder-open btn btn-info" %>
         </p>
   <div>
 </div>

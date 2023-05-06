@@ -1,7 +1,20 @@
 Admin.create!(
   email: "a@a",
-  password: "aaaaaa"
+  password: "aaaaaaa"
 )
+
+ Genre.create!(
+     name: "ケーキ",
+  )
+  
+  Item.create!(
+    genre_id: 1,
+    name: "いちごのショートケーキ（ホール）",
+    introduction: "栃⽊県産のとちおとめを贅沢に使⽤しています。",
+    price: 2750,
+    is_active: [['販売中', true], ['販売停止', false]],
+    image: open("./app/assets/images/cake6.jpg")
+  )
 
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
