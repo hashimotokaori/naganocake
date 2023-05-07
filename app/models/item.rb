@@ -13,4 +13,12 @@ class Item < ApplicationRecord
     ["created_at", "genre_id", "id", "introduction", "is_active", "name", "price", "updated_at"]
   end
   
+  def get_image(width, height)
+  unless image.attached?
+    file_path = Rails.root.join('app/assets/images/CAKE2.jpg')
+    image.attach(io: File.open(file_path), filename: 'default-image.jpg', content_type: 'image/jpeg')
+  end
+  image.variant(resize_to_limit: [width, height]).processed
+end
+  
 end
