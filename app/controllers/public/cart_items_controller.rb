@@ -16,7 +16,7 @@ class Public::CartItemsController < ApplicationController
            redirect_to customers_cart_items_path
         else
             flash[:alert] = "個数を選択してください"
-            render "customers/items/show"
+            render "public/items/show"
         end
     end
 
