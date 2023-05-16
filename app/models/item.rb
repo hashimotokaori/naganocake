@@ -13,6 +13,10 @@ class Item < ApplicationRecord
     ["created_at", "genre_id", "id", "introduction", "is_active", "name", "price", "updated_at"]
   end
   
+  def with_tax_price
+    (price * 1.1).floor
+  end
+  
   def get_image(width, height)
   unless image.attached?
     file_path = Rails.root.join('app/assets/images/CAKE2.jpg')

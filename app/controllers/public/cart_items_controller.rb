@@ -3,24 +3,28 @@ class Public::CartItemsController < ApplicationController
     
     def index
         @cart_items = current_customer.cart_items
-        @total_price = @cart_items.sum{|cart_item|cart_item.item.price_without_tax * cart_item.quantity * 1.1}
+        # @total_price = @cart_items.sum{|cart_item|cart_item.item.price_without_tax * cart_item.quantity * 1.1}
     end
     
     def create
-        @cart_item = CartItem.new(cart_item_params)
-        @cart_item.customer_id = current_customer.id
-        #@cart_item.item_id = params[:item_id]
-        #binding.pry
-        if @cart_item.save
-           flash[:notice] = "#{@cart_item.item.name}をカートに追加しました。"
-           redirect_to customers_cart_items_path
-        else
-            @genres = Genre.all
-            @item = Item.find(params[:item_id])
-            flash[:alert] = "個数を選択してください"
-            render "public/items/show"
-        end
+        @cart_item_check = CartItem.find_by(customer_id: current_customer.id, item_id: params[:cart_item][:item_id])
+     if @cart_item_check
+      @cart_item_check.amount += params[:cart_item][:amount].to_i
+      @cart_item_check.save
+      flash[:success] = "カートに存在済のアイテムです"
+      redirect_to cart_items_path
+     else
+      @cart_item = CartItem.new(cart_item_params)
+      @cart_item.customer_id = current_customer.id
+      if @cart_item.save
+        flash[:success] = "カートに追加しました"
+        redirect_to cart_items_path
+      else
+        flash[:danger] = "予期せぬエラーが発生しました"
+        redirect_back(fallback_location: root_path)
+      end
     end
+  end
 
     def update
         @cart_item = CartItem.find(params[:id])
