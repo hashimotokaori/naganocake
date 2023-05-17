@@ -30,7 +30,7 @@
     <div class="col-md-3 col-sm-6">
         <div class="card w-100 bg-transparent border-0" style="width: 18rem;">
           <%= link_to item_path(item) do %>
-            <!--<div class="img-wrap"><%#= image_tag(@item.image,size: "250x250",fallback: "no_image.jpg") %></div>-->
+            <div class="img-wrap"><%= image_tag item.get_image(250, 250),fallback: "no_image.jpg" %></div>
           <% end %>
           <div class="card-body">
             <p class="card-text"><%= item.name %></p>

@@ -35,7 +35,7 @@
           <% @total_amount = 0 %>
           <% @cart_items.each.with_index(1) do |cart_item, i| %>
             <tr>
-              <!--<td class="align-middle" style="word-break:break-all"><%#= attachment_image_tag cart_item.item, :image, format: 'jpeg', fallback: "no_image.jpg", size: "50x50" %><%= cart_item.item.name %></td>-->
+              <td class="align-middle" style="word-break:break-all"><%= image_tag cart_item.get_image(50, 50) %><%= cart_item.item.name %></td>
               <td class="align-middle"><%= cart_item.item.with_tax_price %></td>
               <td class="align-middle">
                 <%= form_with model: cart_item, local: true do |f| %>
@@ -43,7 +43,7 @@
                   <%= f.submit "変更", class: "btn btn-success", id: "amount-submit-#{i}" %>
                 <% end %>
               </td>
-              <td class="align-middle"><%= cart_item.item.with_tax_price %></td>
+              <td class="align-middle"><%= (cart_item.subtotal).to_i %></td>
               <td class="align-middle text-center"><%= link_to "削除する", cart_item_path(cart_item), class: "btn btn-danger", id: "cart-item-delete-#{i}", method: :delete, data: { confirm: '削除しますか？' } %></td>
             </tr>
             <% @total_amount += cart_item.subtotal %>

@@ -23,13 +23,13 @@ class Public::CartItemsController < ApplicationController
         flash[:danger] = "予期せぬエラーが発生しました"
         redirect_back(fallback_location: root_path)
       end
+     end
     end
-  end
 
     def update
         @cart_item = CartItem.find(params[:id])
         @cart_item.update(cart_item_params)
-        redirect_to customers_cart_items_path
+        redirect_to cart_items_path
     end
 
     def destroy
@@ -39,12 +39,12 @@ class Public::CartItemsController < ApplicationController
         redirect_to customers_cart_items_path
     end
 
-    def all_destroy
-        @cart_item = current_customer.cart_items
-        @cart_item.destroy_all
-        flash[:alert] = "カートの商品を全て削除しました"
-        redirect_to customers_cart_items_path
+    def destroy_all
+    CartItem.where(customer_id: current_customer.id).destroy_all
+    flash[:success] = "カートの中身を空にしました"
+    redirect_back(fallback_location: root_path)
     end
+
 
     private
 

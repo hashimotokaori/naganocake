@@ -5,6 +5,7 @@ class Admin::HomesController < ApplicationController
     def top
     @orders = Order.where("created_at" === Date.today)
     @orders = Order.page(params[:page])
+    @items = Item.all.order(created_at: :desc)
     #whereは与えられた条件にマッチするレコードを全て返す
     #今回は今日来た注文の日をマッチさせている
     #参考URLはこれhttps://easyramble.com/get-today-record-with-rails-activerecord.html

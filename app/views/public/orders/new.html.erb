@@ -1,62 +1,39 @@
+<script type="text/javascript" src="//code.jquery.com/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="//jpostal-1006.appspot.com/jquery.jpostal.js"></script>
 <div class="container">
-  <h2 class="font-weight-bold my-5">注文情報入力</h2>
-  <div class="row">
-
-    <div class="col-xs-12">
-      <% if current_customer.cart_items.present? %>
-        <div class="col-xs-offset-1">
-        <%= form_with model: @order, url: confirm_orders_path, method: :post, local: true do |f| %>
-          <h5 class="col-xs-3 font-weight-bold mb-3">支払い方法</h5>
-           <div class="col-xs-10">
-             <%= f.radio_button :payment_method, :"クレジットカード", checked: true %>
-             <%= f.label :"クレジットカード"%>
-           </div>
-           <div class="col-xs-10">
-             <%= f.radio_button :payment_method, :"銀行振込" %>
-             <%= f.label :"銀行振込"%>
-           </div>
-           
-          <h5 class="col-xs-3 font-weight-bold my-3">お届け先</h5>
-           <div class="col-xs-10">
-             <%= f.radio_button :my_address, "1", checked: true %>
-             <%= f.label :"ご自身の住所"%><br>
-             <%= "〒#{current_customer.postal_code} #{current_customer.address}"%><br>
-             <%= "#{full_name(current_customer)}"%>
-           </div>
-
-          <% if @address != [] %>
-          <div class="col-xs-10">
-            <%= f.radio_button :my_address, "2"%>
-             <%= f.label :"登録住所からの選択"%><br>
-            <%= f.collection_select  :address_id, @addresses, :id, :order_address%>
-          </div>
-          <% end %>
-
-           <div class="col-xs-10 mt-5">
-             <%= f.radio_button :my_address, "3"%>
-             <%= f.label :"新しいお届け先"%>
-             <div class="col-xs-12 form_group">
-               <%= f.label :"郵便番号（ハイフンなし）",class:"col-sm-4 form-control-static"%>
-               <%= f.text_field :postal_code, class:"col-sm-3 form-control-static",placeholder:"0000000"%>
-             </div>
-             <div class="col-xs-12 form_group my-3">
-               <%= f.label :"住所",class:"col-sm-4 form-control-static"%>
-               <%= f.text_field :address, class:"col-sm-6 form-control-static",placeholder:"東京都渋谷区代々木神園町0-0",:size =>"100"%>
-             </div>
-             <div class="col-xs-12 form_group">
-               <%= f.label :"宛名",class:"col-sm-4 form-control-static"%>
-               <%= f.text_field :name, class:"col-sm-3 form-control-static",placeholder:"令和道子"%>
-             </div>
-           </div>
-
-           <div class="col-xs-8 d-flex justify-content-center mt-5">
-             <%= f.submit "確認画面へ進む", class:"btn btn-primary col-xs-5 "%>
-           </div>
-        <% end %>
-        </div>
+  <div class="row my-3">
+    <div class="col-sm-10 px-sm-0 mx-auto">
+      <h2>注文情報入力</h2>
+      <%= form_with model: @order, url: {controller: 'public/orders', action: 'confirm' },  local:true do |f| %>
+      <h4 class="h4 mt-2"><b>支払い方法</b></h4>
+      <%= f.radio_button :payment_option, 0, checked: true, class: "ml-4" %>クレジットカード<br>
+      <%= f.radio_button :payment_option, 1, class: "ml-4"  %>銀行振込
+      <h4 class="h4 mt-2"><b>お届け先</b></h4>
+      <%= f.radio_button :address_option, 0, checked: true, class: "ml-4"  %>ご自身の住所<br>
+      <div class="ml-5"><%= "〒#{current_customer.postal_code} #{current_customer.address}" %></div>
+      <div class="ml-5"><%= current_customer.last_name + current_customer.first_name  %></div>
+      <% if current_customer.shipping_addresses.empty? %>
       <% else %>
-        <p>お客様のカートに商品はありません。</p>
-        <p><%= link_to "商品一覧", items_path, class:"btn btn-primary"%>から商品をお探し下さい。</p>
+        <%= f.radio_button :address_option, 1, class: "ml-4 mt-3"  %>登録済み住所から選択<br>
+        <div class="ml-5 "><%= f.collection_select(:registration_shipping_address, @shipping_addresses, :id, :shipping_postcode_and_address_and_name,
+                                                  {}, {class: "form-control"}) %></div>
+      <% end %>
+      <%= f.radio_button :address_option, 2, class: "ml-4 mt-3"  %>新しいお届け先<br>
+      <table class="ml-5">
+        <tr>
+          <td>郵便番号（ハイフン無し）</td>
+          <td><%= f.text_field :shipping_postcode, class: "form-control", size: 40, id: "customer_postcode" %></td>
+        </tr>
+        <tr>
+          <td>住所</td>
+          <td><%= f.text_field :shipping_address, class: "form-control", size: 40, id: "customer_address" %></td>
+        </tr>
+        <tr>
+          <td>宛名</td>
+          <td><%= f.text_field :shipping_name, class: "form-control", size: 40 %></td>
+        </tr>
+      </table>
+      <div class="text-center mt-3"><%= f.submit "確認画面へ進む", class: "btn btn-primary" %></div>
       <% end %>
     </div>
   </div>
