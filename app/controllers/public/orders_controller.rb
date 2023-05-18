@@ -1,128 +1,89 @@
 class Public::OrdersController < ApplicationController
-    before_action :authenticate_customer!
-    
-    
-    def about
-		@order = Order.new
-		@customer = current_customer
-		@addresses = ShippingAddress.where(customer_id: current_customer.id)
-	end
+    include Public::OrdersHelper
+  before_action :authenticate_customer!
+  before_action :cart_check, only: [:new, :confirm, :create]
 
-	def create
-		customer = current_customer
-
-		# sessionを使ってデータを一時保存
-		session[:order] = Order.new
-
-		cart_items = current_customer.cart_items
-
-		# total_paymentのための計算
-		sum = 0
-		cart_items.each do |cart_item|
-			sum += (cart_item.item.price_without_tax * 1.1).floor * cart_item.quantity
-		end
-
-		session[:order][:postage] = 800
-		session[:order][:total_payment] = sum + session[:order][:postage]
-		session[:order][:order_status] = 0
-		session[:order][:customer_id] = current_customer.id
-		# ラジオボタンで選択された支払方法のenum番号を渡している
-		session[:order][:payment_method] = params[:method].to_i
-
-		# ラジオボタンで選択されたお届け先によって条件分岐
-		destination = params[:a_method].to_i
-
-		# ご自身の住所が選択された時
-		if destination == 0
-
-			session[:order][:post_code] = customer.postal_code
-			session[:order][:address] = customer.address
-			session[:order][:name] = customer.last_name + customer.first_name
-
-		# 登録済住所が選択された時
-		elsif destination == 1
-
-			address = ShippingAddress.find(params[:shipping_address_for_order])
-			session[:order][:post_code] = address.postal_code
-			session[:order][:address] = address.address
-			session[:order][:name] = address.name 
-
-		# 新しいお届け先が選択された時
-		elsif destination == 2
-
-			session[:new_address] = 2
-			session[:order][:post_code] = params[:post_code]
-			session[:order][:address] = params[:address]
-			session[:order][:name] = params[:name]
-
-		end
-
-		# お届け先情報に漏れがあればリダイレクト
-		if session[:order][:post_code].presence && session[:order][:address].presence && session[:order][:name].presence
-			redirect_to new_customers_order_path
-		else
-			redirect_to customers_orders_about_path
-		end
-
-	end
-
-
-	def new
-		@cart_items = current_customer.cart_items
-    
+  def cart_check
+    unless CartItem.find_by(customer_id: current_customer.id)
+      flash[:danger] = "カートに商品がない状態です"
+      redirect_to root_url
     end
+  end
+
+  def new
+    @order = Order.new
+    @shipping_addresses = current_customer.shipping_addresses
+  end
+
+  def confirm
+    @order = Order.new(order_params)
     
-    def complete
-		order = Order.new(session[:order])
-		order.save
+    @order.shipping_postal_code = current_customer.postal_code
+    @order.shipping_address = current_customer.address
+    @order.shipping_name = current_customer.first_name + current_customer.last_name
 
-		if session[:new_address]
-			shipping_address = current_customer.shipping_addresses.new
-			shipping_address.postal_code = order.post_code
-			shipping_address.address = order.address
-			shipping_address.name = order.name
-			shipping_address.save
-			session[:new_address] = nil
-		end
+    
+    @cart_items = CartItem.where(customer_id: current_customer.id)
+    customer = current_customer
+    address_option = params[:order][:address_option].to_i
 
-		# 以下、order_detail作成
-		cart_items = current_customer.cart_items
-		cart_items.each do |cart_item|
-			order_detail = OrderDetail.new
-			order_detail.order_id = order.id
-			order_detail.item_id = cart_item.item.id
-			order_detail.quantity = cart_item.quantity
-			order_detail.making_status = 0
-			order_detail.price = (cart_item.item.price_without_tax * 1.1).floor
-			order_detail.save
-		end
+    @order.payment_method = params[:order][:payment_method].to_i
+    @order.temporary_information_input(customer.id)
 
-		# 購入後はカート内商品削除
-		cart_items.destroy_all
-	end
+    if shipping_addresses_path == 0
+      @order.order_in_postal_code_address_name(customer.postal_code, customer.address, customer.last_name)
+    elsif address_option == 1
+      shipping = ShippingAddress.find(params[:order][:registration_shipping_address])
+      @order.order_in_postcode_address_name(shipping.shipping_postal_code, shipping.shipping_address, shipping.shipping_name)
+    elsif address_option == 2
+      @order.order_in_postal_code_address_name(params[:order][:shipping_postal_code], params[:order][:shipping_address], params[:order][:shipping_name])
+    else
+    end
+    # unless @order.valid?
+    #   flash[:danger] = "お届け先の内容に不備があります<br>・#{@order.errors.full_messages.join('<br>・')}"
+    #   p @order.errors.full_messages
+    #   redirect_back(fallback_location: root_path)
+    # end
+    # render :new
+  end
 
-	def index
-		@orders = current_customer.orders
-	end
+  def create
+    @order = Order.new(order_params)
+    @order.customer_id = current_customer.id
+    @order.postage = 800
+    if @order.save
+      @cart_items = CartItem.where(customer_id: current_customer.id)
+      @cart_items.each do |cart_item|
+        order_detail = OrderDetail.new
+        order_detail.item_id = cart_item.item_id
+        order_detail.order_id = @order.id
+        order_detail.amount = cart_item.amount
+        order_detail.price = change_price_excluding_tax(cart_item.item.price_excluding_tax)
+        order_detail.making_status = 0
+        if order_detail.save
+          @cart_items.destroy_all
+        end
+      end
+      redirect_to orders_thanks_path
+    else
+    end
+  end
 
-	def show
-		@order = Order.find(params[:id])
-		@order_details = @order.order_details
-	end
+  def thanks
+  end
 
-	# private
-		# def shipping_address_params
-		# 	params.require(:shipping_address).permit(:customer_id, :postal_code, :name, :address)
+  def show
+    @order = Order.find(params[:confirm_id])
+  end
 
-	#     def order_params
-	#        params.require(:order).permit(:customer_id, :postage, :total_payment, :payment_method, :ordr_status, :post_code, :address, :name)
-	#     end
+  def index
+    @orders = Order.where(customer_id: current_customer.id).order(created_at: :desc)
+  end
 
+  private
 
-	#     def order_detail_params
-	#        params.require(:order_detail).permit(:order_id, :item_id, :quantity, :making_status, :price)
-	#     end
-
-
+  def order_params
+    params.require(:order).permit(:shipping_postal_code, :shipping_address, :shipping_name, :billing_amount, :postage, :payment_method, :postal_code, :address, :name)
+  end
 
 end
