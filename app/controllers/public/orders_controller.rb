@@ -64,16 +64,21 @@ class Public::OrdersController < ApplicationController
           @cart_items.destroy_all
         end
       end
-      redirect_to orders_thanks_path
+      redirect_to orders_create_path
     else
     end
   end
 
-  def thanks
-  end
 
   def show
-    @order = Order.find(params[:confirm_id])
+    @order = Order.find(params[:id])
+    @ordering_details= @order.ordering_details
+    @order.postage = 800
+    @total_price = 0
+    @ordering_details.each do |ordering_detail|
+     @total_price += ordering_detail.item.add_tax_price*ordering_detail.amount
+    end
+    @order.total_payment = @total_price + @order.postage
   end
 
   def index
@@ -83,7 +88,7 @@ class Public::OrdersController < ApplicationController
   private
 
   def order_params
-    params.require(:order).permit(:shipping_postal_code, :shipping_address, :shipping_name, :billing_amount, :postage, :payment_method, :postal_code, :address, :name)
+    params.require(:order).permit(:shipping_postal_code, :shipping_address, :shipping_name, :billing_amount, :postage, :payment_method, :billing_amount)
   end
 
 end

@@ -44,8 +44,8 @@
         <%= f.hidden_field :shipping_postcode, :value => @order.shipping_postal_code %>
         <%= f.hidden_field :shipping_address, :value => @order.shipping_address %>
         <%= f.hidden_field :shipping_name, :value => @order.shipping_name %>
-        <%= f.hidden_field :total_payment, :value => @total_billing_amount %>
-        <%= f.hidden_field :payment_option, :value => @order.payment_method %>
+        <%= f.hidden_field :billing_amount, :value => @total_billing_amount %>
+        <%= f.hidden_field :payment_method, :value => @order.payment_method %>
         <div class="text-center mb-3"><%= f.submit "注文を確定する", class: "btn btn-success" %></div>
       <% end %>
     </div>

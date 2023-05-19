@@ -23,7 +23,7 @@ class Order < ApplicationRecord
   end
 
   def order_in_postcode_address_name(postcode, address, name)
-    self.shipping_postcode = postcode
+    self.shipping_postal_code = postcode
     self.shipping_address = address
     self.shipping_name = name
   end
