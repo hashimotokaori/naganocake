@@ -4,7 +4,8 @@ class Order < ApplicationRecord
   validates :payment_method, presence: true
   validates :postage, presence: true
   validates :shipping_address, length: { in: 1..48 }
-  validates :shipping_postal_code, format: { with: /\A\d{3}[-]\d{4}\z/ }
+  validates :shipping_postal_code, presence: true
+  #validates :shipping_postal_code, format: { with: /\A\d{3}[-]\d{4}\z/ }
   validates :shipping_name, length: { in: 1..32 }
   validates :order_status, presence: true
   
