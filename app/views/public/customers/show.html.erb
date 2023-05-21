@@ -1,49 +1,58 @@
-<div class="row">
-  <div class="col-xs-12">
-    <h3><strong>マイページ</strong></h3>
-        <table class="table table-bordered table-condensed">
-            <p>
-                <strong class="information-link">登録情報</strong>
-                <%= link_to " 編集する", edit_customers_path, class: "glyphicon glyphicon-pencil btn btn-success" %>
-                <%#= link_to " パスワードを変更する", edit_password_path, class: "glyphicon glyphicon-pencil btn btn-warning" %>
-            </p>
-            <tr>
-                <td class="col-xs-2">氏名</td>
-                <td><%= current_customer.last_name %>&nbsp;<%= current_customer.first_name %></td>
-            </tr>
-
-            <tr>
-                <td class="col-xs-2">カナ</td>
-                <td><%= current_customer.last_name_kana %>&nbsp;<%= current_customer.first_name_kana %></td>
-            </tr>
-
-            <tr>
-                <td class="col-xs-2">郵便番号</td>
-                <td><%= current_customer.postal_code %></td>
-            </tr>
-
-            <tr>
-                <td class="col-xs-2">住所</td>
-                <td><%= current_customer.address %></td>
-            </tr>
-
-            <tr>
-                <td class="col-xs-2">電話番号</td>
-                <td><%= current_customer.telephone_number %></td>
-            </tr>
-
-            <tr>
-                <td class="col-xs-2">メールアドレス</td>
-                <td><%= current_customer.email %></td>
-            </tr>
-        </table>
-        <p>
-            <strong class="shipping-link">配送先</strong>
-            <%= link_to " 一覧を見る", shipping_addresses_path, class: "glyphicon glyphicon-folder-open btn btn-info" %>
-        </p>
-        <p>
-            <strong class="shipping-link">注文履歴</strong>
-            <%= link_to " 一覧を見る", orders_path, class: "glyphicon glyphicon-folder-open btn btn-info" %>
-        </p>
-  <div>
+<div class="container">
+  <div class="row my-3">
+    <div class="col-sm-8 px-sm-0 offset-sm-1">
+      <h2>マイページ</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-3 px-sm-0 offset-sm-1">
+      <h4>登録情報</h4>
+    </div>
+    <div class="col-sm-4 px-sm-0">
+      <%= link_to "編集する", edit_customers_path, class:"btn btn-success px-4 mb-2" %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 px-sm-0 offset-sm-1">
+      <table class="table table-bordered">
+        <tr>
+          <th class="table-active">お名前</th>
+          <td><%= current_customer.last_name %>&nbsp;<%= current_customer.first_name %></td>
+        </tr>
+        <tr>
+          <th class="table-active">フリガナ</th>
+          <td><%= current_customer.last_name_kana %>&nbsp;<%= current_customer.first_name_kana %></td>
+        </tr>
+        <tr>
+          <th class="table-active">郵便番号</th>
+          <td><%= current_customer.postal_code %></td>
+        </tr>
+        <tr>
+          <th class="table-active">住所</th>
+          <td><%= current_customer.address %></td>
+        </tr>
+        <tr>
+          <th class="table-active">電話番号</th>
+           <td><%= current_customer.telephone_number %></td>
+        </tr>
+        <tr>
+          <th class="table-active">メールアドレス</th>
+           <td><%= current_customer.email %></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-3 px-sm-0 offset-sm-1"><h4>配送先</h4></div>
+    <div class="col-sm-3 px-sm-0">
+      <%= link_to " 一覧を見る", shipping_addresses_path, class: "glyphicon glyphicon-folder-open btn btn-info" %>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-sm-3 px-sm-0 offset-sm-1"><h4>注文履歴</h4></div>
+    <div class="col-sm-3 px-sm-0">
+      <%= link_to " 一覧を見る", orders_path, class: "glyphicon glyphicon-folder-open btn btn-info" %>
+    </div>
+  </div>
 </div>

@@ -1,43 +1,38 @@
 <div class="container">
-<h1>会員一覧</h1>
-<div class="row">
-  <div class="col-xs-1"></div>
-
-    <div class="col-xs-10">
-    <table class="table customer-table">
-      <thead>
-        <tr>
-          <th class="active">会員ID</th>
-          <th class="active">氏名</th>
-          <th class="active">メールアドレス</th>
-          <th class="active">ステータス</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @customers.each do |customer| %>
-          <tr>
-            <td>
-              <%= customer.id %>
-            </td>
-            <td>
-              <%= link_to (customer.last_name + customer.first_name),admin_customer_path(customer.id) %>
-              <%=  %>
-            </td>
-            <td>
-              <%= customer.email %>
-            </td>
-            <td>
-              <% if customer.is_customer_status == false %>
-                退会済み
-              <% else %>
-                有効
-              <% end %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+  <div class="row my-3">
+    <div class="col-sm-8 px-sm-0 offset-sm-1">
+      <h2>会員一覧</h2>
+    </div>
   </div>
-  <div class="col-xs-1"></div>
-</div>
+  <div class="row my-3">
+    <div class="col-sm-10 px-sm-0 offset-sm-1">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th class="table-active">会員ID</th>
+            <th class="table-active">氏名</th>
+            <th class="table-active">メールアドレス</th>
+            <th class="table-active">ステータス</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @customers.each do |customer| %>
+            <tr>
+              <td class="align-middle"><%= customer.id %></td>
+              <td class="align-middle"><u><%= link_to customer.last_name + customer.first_name, admin_customer_path(customer.id), class:"font-weight-bold" %></u></td>
+              <td class="align-middle"><%= customer.email %></td>
+              <td class="align-middle">
+                <% if customer.is_customer_status == false %>
+                  <p class="text-success font-weight-bold">有効</p>
+                <% else %>
+                  <p class="text-secondary">退会</p>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%= paginate @customers %>
+    </div>
+  </div>
 </div>

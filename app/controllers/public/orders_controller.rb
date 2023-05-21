@@ -16,27 +16,21 @@ class Public::OrdersController < ApplicationController
   end
 
   def confirm
-    @order = Order.new(order_params)
-    
-    @order.shipping_postal_code = current_customer.postal_code
-    @order.shipping_address = current_customer.address
-    @order.shipping_name = current_customer.first_name + current_customer.last_name
-
-    
+    @order = Order.new
     @cart_items = CartItem.where(customer_id: current_customer.id)
     customer = current_customer
     address_option = params[:order][:address_option].to_i
 
-    @order.payment_method = params[:order][:payment_method].to_i
+    @order.payment_method = params[:order][:payment_option].to_i
     @order.temporary_information_input(customer.id)
 
-    if shipping_addresses_path == 0
-      @order.order_in_postal_code_address_name(customer.postal_code, customer.address, customer.last_name)
+    if address_option == 0
+      @order.order_in_postcode_address_name(customer.postcode, customer.address, customer.last_name)
     elsif address_option == 1
       shipping = ShippingAddress.find(params[:order][:registration_shipping_address])
-      @order.order_in_postcode_address_name(shipping.shipping_postal_code, shipping.shipping_address, shipping.shipping_name)
+      @order.order_in_postcode_address_name(shipping.shipping_postcode, shipping.shipping_address, shipping.shipping_name)
     elsif address_option == 2
-      @order.order_in_postal_code_address_name(params[:order][:shipping_postal_code], params[:order][:shipping_address], params[:order][:shipping_name])
+      @order.order_in_postcode_address_name(params[:order][:shipping_postcode], params[:order][:shipping_address], params[:order][:shipping_name])
     else
     end
     # unless @order.valid?

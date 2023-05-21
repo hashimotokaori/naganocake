@@ -18,6 +18,9 @@ class Public::CustomersController < ApplicationController
             render 'edit'
         end
     end
+    
+    def unsubscribe
+    end
 
 
     def quit
