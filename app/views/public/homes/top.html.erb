@@ -1,57 +1,43 @@
 <div class="container">
-        <div class="row">
-            <div class="col-xs-12 mx-auto">
-                <div class="text-center">                
-                    
-                    <div style=”position: relative;”>
-
- 
-
-<img src=”app/assets/images/cake6.jpg”><br />
-
-<div style=”position: absolute; top: 0px; left: 0px; width: 200px;”>
-                    <p>
-                        <span>Welcome Naganocake</span><br>
-                        このサイトは、ケーキ販売のECサイトになります。<br>
-                        会員でない方も商品の閲覧はできますが、<br>
-                        購入には会員登録が必要になります。<br>
-                    </p>
-                </div>
-            </div>
-        </div>
+ <div class="row">
+  <div class="col-xs-12 mx-auto">
+   <div class="text-center">                
+     <div style=”position: relative;”>
+     <img src=”app/assets/images/cake6.jpg” alt="ケーキ"><br />
+     <div style=”position: absolute; top: 0px; left: 0px; width: 200px;”>
+        <p>
+          <span>Welcome Naganocake</span><br>
+          このサイトは、ケーキ販売のECサイトになります。<br>
+          会員でない方も商品の閲覧はできますが、<br>
+          購入には会員登録が必要になります。<br>
+        </p>
+      </div>
+      </div>
     </div>
-    </div>
-
+  </div>
+ </div>
 </div>
-
-  <div class="slide">
-    <div class="slide-item"><img class="slide-img" src="assets/shopImage.jpg"></div>
-    <div class="slide-item"><img class="slide-img" src="assets/strawberry.jpg"></div>
-    <div class="slide-item"><img class="slide-img" src="assets/top-image.jpg"></div>
-</div>
-</div>
-
 
 <div class="container new-item">
   <h2>新着商品</h2>
   <div class="row">
-      <% @items.first(4).each do |item| %>
-    <div class="col-md-3 col-sm-6">
-        <div class="card w-100 bg-transparent border-0" style="width: 18rem;">
-          <%= link_to item_path(item) do %>
-            <div class="img-wrap"><%= image_tag item.get_image(250, 250),fallback: "no_image.jpg" %></div>
-          <% end %>
-          <div class="card-body">
-            <p class="card-text"><%= item.name %></p>
-            <%# if item.sales_status == true %>
-              <!--<p class="card-text"><%#= item.price_excluding_tax %>円(税抜き)</p>-->
-            <!--<#% else %>-->
-              <!--<p class="card-text text-danger">販売停止中</p>-->
-            <!--<#% end %>-->
-          </div>
-        </div>
+  <% @items.first(4).each do |item| %>
+  <div class="col-md-3 col-sm-6">
+    <div class="card w-100 bg-transparent border-0" style="width: 18rem;">
+      <%= link_to item_path(item) do %>
+      <div class="img-wrap"><%= image_tag item.get_image(250, 250),fallback: "no_image.jpg" %></div>
+      <% end %>
+      <div class="card-body">
+      <p class="card-text"><%= item.name %></p>
+            <% if item.is_active == true %>
+              <p class="card-text"><%= item.price %>円</p>
+            <% else %>
+              <p class="card-text text-danger">販売停止中</p>
+            <% end %>
       </div>
-    <% end %>
+    </div>
+  </div>
+  <% end %>
   </div>
   <div class="all-items-show-button"><%= link_to "全ての商品をみる", items_path %></div>
 </div>

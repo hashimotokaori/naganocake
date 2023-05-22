@@ -23,7 +23,7 @@
       <tr>
         <div class="form-group">
           <th><%= f.label :商品説明 %></th>
-          <td><%= f.text_area :description, size: "50x5", placeholder:"ここに説明文を記述します" %></td>
+          <td><%= f.text_area :introduction, size: "50x5", placeholder:"ここに説明文を記述します" %></td>
         </div>
       </tr>
       <tr>
@@ -35,16 +35,16 @@
       <tr>
         <div class="form-group">
           <th><%= f.label :税抜価格 %></th>
-          <td><%= f.text_field :price_excluding_tax, placeholder:"1000" %>円</td>
+          <td><%= f.text_field :price, placeholder:"1000" %>円</td>
         </div>
       </tr>
       <tr>
         <div class="form-group">
           <th><%= f.label :販売ステータス %></th>
-          <td><%= f.radio_button :sales_status, true, checked: true %>
-          <%= f.label :sales_status, "販売中" %>
-          <%= f.radio_button :sales_status, false %>
-          <%= f.label :sales_status, "販売中止" %></td>
+          <td><%= f.radio_button :is_active, true, checked: true %>
+          <%= f.label :is_active, "販売中" %>
+          <%= f.radio_button :is_active, false %>
+          <%= f.label :is_active, "販売中止" %></td>
         </div>
       </tr>
       <tr>

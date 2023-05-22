@@ -76,7 +76,7 @@ class Public::OrdersController < ApplicationController
         order_detail = OrderDetail.new
         order_detail.item_id = cart_item.item_id
         order_detail.order_id = @order.id
-        order_detail.quantity = cart_item.amount
+        order_detail.amount = cart_item.amount
         order_detail.price = cart_item.item.with_tax_price
         order_detail.making_status = 0
         if order_detail.save
@@ -94,13 +94,7 @@ class Public::OrdersController < ApplicationController
 
   def show
     @order = Order.find(params[:id])
-    @ordering_details= @order.ordering_details
-    @order.postage = 800
-    @total_price = 0
-    @ordering_details.each do |ordering_detail|
-     @total_price += ordering_detail.item.add_tax_price*ordering_detail.amount
-    end
-    @order.total_payment = @total_price + @order.postage
+    @order_details = @order.order_details
   end
 
   def index
