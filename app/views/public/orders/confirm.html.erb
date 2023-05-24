@@ -15,7 +15,7 @@
           <% @total_amount = 0 %>
           <% @cart_items.each do |cart_item| %>
             <tr>
-              <td class="align-middle" style="word-break:break-all"><%= image_tag cart_item.get_image(50, 50) %><%= cart_item.item.name %></td>
+              <td class="align-middle" style="word-break:break-all"><%= image_tag cart_item.item.get_image(50, 50) %><%= cart_item.item.name %></td>
               <td class="align-middle"><%= cart_item.item.with_tax_price %></td>
               <td class="align-middle"><%= cart_item.amount %></td>
               <td class="align-middle"><%= (cart_item.subtotal).to_i %></td>

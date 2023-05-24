@@ -1,7 +1,12 @@
 <div class="container">
-      <div class="row">
+  <div class="row">
+    <div class="col-sm-8 px-sm-0 offset-sm-1">
         <h2>商品新規登録</h2>
+        </div>
+      </div>
         <%#= render 'item_errors', item: @items %>
+        <div class="row">
+        <div class="col-sm-10 px-sm-0 mx-auto mb-5">
         <%= form_with model: @items ,url:admin_items_path,local:true do |f| %>
         <div class="col-xs-3">
         </div>

@@ -40,7 +40,8 @@ class Public::CartItemsController < ApplicationController
     end
 
     def destroy_all
-    CartItem.where(customer_id: current_customer.id).destroy_all
+    CartItem.destroy_all
+    current_customer.cart_items.destroy_all
     flash[:success] = "カートの中身を空にしました"
     redirect_back(fallback_location: root_path)
     end
